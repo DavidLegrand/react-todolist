@@ -1,39 +1,40 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import Task from './Task'
 import NewTask from './NewTask'
+import useArray from '../../hooks/useArray'
 
 const ToDoList = props => {
-  const [list, setList] = useState([
+  const list = useArray([
     { id: 1, description: 'Faire les courses', done: false },
     { id: 2, description: 'Faire le ménage', done: false },
     { id: 3, description: 'Faire à manger', done: false }
-  ])
+  ]);
+
   const setNewId = () => {
-    const [lastElement] = list.slice(-1)
+    const [lastElement] = list.value.slice(-1)
     return lastElement.id + 1;
   }
 
   const addTask = description => {
-    const NewTask = { id: setNewId(), description, done: false }
-    setList([...list, NewTask])
+    list.add({ id: setNewId(), description, done: false })
   }
 
   const toggleDone = task => {
-    list.map((t) => { t.done = (t === task ? !t.done : t.done) })
-    setList([...list])
+    list.value.map((t) => t.done = (t === task ? !t.done : t.done))
+    list.setValue([...list.value])
   }
+
   const deleteTask = task => {
-    const newList = list.filter((t) => t.id !== task.id)
-    setList([...newList])
+    list.removeById(task.id)
   }
+  
   return (
     <>
       <h1>To Do List !</h1>
       <table style={{ width: "33%", margin: "0 auto" }}>
         <thead><tr><th>Fait ?</th><th>Tâche</th><th>Supprimer</th></tr></thead>
         <tbody>
-          {list.map((task) => <Task
+          {list.value.map((task) => <Task
             key={task.id}
             task={task}
             toggleDone={toggleDone}
@@ -48,8 +49,4 @@ const ToDoList = props => {
   )
 }
 
-ToDoList.propTypes = {
-
-}
-
-export default ToDoList
+export default ToDoList;

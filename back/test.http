@@ -1,0 +1,44 @@
+GET http://localhost:8080/api/users
+###########
+GET http://localhost:8080/api/users/1
+###########
+GET http://localhost:8080/api/users?minBirthDate=1/1/1995&maxBirthDate=12/31/1995
+###########
+GET http://localhost:8080/api/posts
+###########
+GET http://localhost:8080/api/users/1/posts
+###########
+POST http://localhost:8080/api/users/1/posts
+content-type: application/json
+
+{
+    "content": "Lorem Ipsum dolor sit amet, consectetur adipis"
+}
+###########
+POST http://localhost:8080/api/users/1/posts/1/comments
+content-type: application/json
+
+{
+    "content": "Lorem Ipsum dolor sit amet, consectetur adipis",
+    "author": {
+        "id":1,
+        "firstName":"Sofie",
+        "lastName":"Celli",
+        "profilePic":"https://robohash.org/uteaoccaecati.png?size=200x200&set=set1"
+    }
+}
+###########
+GET http://localhost:8080/api/likes
+###########
+GET http://localhost:8080/api/users/1/likes
+###########
+GET http://localhost:8080/api/users/2/friends
+###########
+POST http://localhost:8080/api/users/1/friends
+content-type: application/json
+
+{
+    "firstName": "Toto",
+    "lastName": "Toto",
+    "profilePic": "https://robohash.org/autcorporisqui.png?size=200x200&set=set1"
+}
