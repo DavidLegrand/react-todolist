@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Logged } from '../../../context'
 
 const LoginForm = () => {
-  const [login, setLogin] = useState('');
+  const [login, setLogin] = useState('scelli0');
   const [error, setError] = useState('');
 
   const { setUser, setIsLogged } = useContext(Logged);
