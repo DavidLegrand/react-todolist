@@ -1,10 +1,15 @@
 var fs = require('fs');
 
-function shuffle(array) {
+const shuffle = array => {
   array.sort(() => Math.random() - 0.5);
 }
 
-module.exports.list = function (req, res) {
+const orderByDate = array => {
+  array.sort(() => Math.random() - 0.5);
+}
+
+/* All posts */
+module.exports.list = (req, res) => {
   var posts
   postlist = []
   fs.readFile('api/models/posts.json', (err, data) => {
@@ -17,13 +22,12 @@ module.exports.list = function (req, res) {
 
       })
     })
-    shuffle(postlist)
     res.status(200).json(postlist);
   })
 };
 
-module.exports.one = function (req, res) {
-  var user;
+/* Get single post from user */
+module.exports.one = (req, res) => {
   let id = req.params.id
   fs.readFile('api/models/posts.json', (err, data) => {
     if (err) throw err;
@@ -33,14 +37,48 @@ module.exports.one = function (req, res) {
   })
 };
 
-Date.prototype.formatMDYYYY = function () {
+module.exports.newsfeed = (req, res) => {
+
+  let userId = +req.params.id
+  var meAndFriends;
+  var newsfeed = []
+  fs.readFile('api/models/friends.json', (err, data) => {
+    if (err) throw err;
+    friends = JSON.parse(data)
+    meAndFriends = [userId]
+    friends.map(userFriend => {
+      if (userFriend.userId === userId) {
+        userFriend.friends.map(f => meAndFriends.push(f.id))
+      }
+    });
+    fs.readFile('api/models/posts.json', (err, data) => {
+      if (err) throw err;
+      posts = JSON.parse(data)
+      posts.map(userPosts => {
+        if (meAndFriends.includes(userPosts.userId)) {
+          userPosts.posts.map(p => p.userId = userPosts.userId)
+          newsfeed.push(...userPosts.posts)
+        }
+      })
+      newsfeed.sort((a,b) => new Date(b.date) - new Date(a.date))
+      res.status(200).json(newsfeed);
+      console.log(newsfeed)
+    })
+
+  })
+  /*
+    
+    */
+}
+
+Date.prototype.formatMDYYYY = () => {
   return (this.getMonth() + 1) +
     "/" + this.getDate() +
     "/" + this.getFullYear();
 }
 
-module.exports.add = function (req, res) {
-  
+module.exports.add = (req, res) => {
+
   let id = req.params.id
   let post = {
     id: undefined,
@@ -63,7 +101,7 @@ module.exports.add = function (req, res) {
 };
 
 
-module.exports.addcomment = function (req, res) {
+module.exports.addcomment = (req, res) => {
 
   let uid = req.params.uid
   let pid = req.params.pid

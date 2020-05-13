@@ -1,20 +1,33 @@
+########### GET ALL USERS ########### 
 GET http://localhost:8080/api/users
-###########
+
+########### GET ONE USER ########### 
 GET http://localhost:8080/api/users/1
-###########
+
+########### GET USERS BY BIRTHDATE ###########
+########### NOTE THAT ALL FIELDS CAN BE SEARCHED (login, gender, bio ...) ###########
 GET http://localhost:8080/api/users?minBirthDate=1/1/1995&maxBirthDate=12/31/1995
-###########
+
+
+
+########### GET ALL POSTS ########### 
 GET http://localhost:8080/api/posts
-###########
+
+########### GET ONE USER'S POSTS ########### 
 GET http://localhost:8080/api/users/1/posts
-###########
+
+########### GET ONE USER'S NEWSFEED ########### 
+GET http://localhost:8080/api/users/1/newsfeed
+
+########### CREATE ONE USER POST ########### 
 POST http://localhost:8080/api/users/1/posts
 content-type: application/json
 
 {
     "content": "Lorem Ipsum dolor sit amet, consectetur adipis"
 }
-###########
+
+########### CREATE ONE COMMENT ########### 
 POST http://localhost:8080/api/users/1/posts/1/comments
 content-type: application/json
 
@@ -27,17 +40,24 @@ content-type: application/json
         "profilePic":"https://robohash.org/uteaoccaecati.png?size=200x200&set=set1"
     }
 }
-###########
+
+########### GET ALL LIKES ########### 
 GET http://localhost:8080/api/likes
-###########
+
+########### GET ONE USER'S LIKES ########### 
 GET http://localhost:8080/api/users/1/likes
-###########
+
+
+
+########### GET ONE USER'S FRIENDS ########### 
 GET http://localhost:8080/api/users/2/friends
-###########
+
+########### ADD A FRIEND ########### 
 POST http://localhost:8080/api/users/1/friends
 content-type: application/json
 
 {
+    "id" : -5,
     "firstName": "Toto",
     "lastName": "Toto",
     "profilePic": "https://robohash.org/autcorporisqui.png?size=200x200&set=set1"

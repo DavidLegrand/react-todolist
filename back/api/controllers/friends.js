@@ -1,7 +1,7 @@
 var fs = require('fs');
 
+/* Get one friend */
 module.exports.one = function (req, res) {
-
   let id = req.params.id
   fs.readFile('api/models/friends.json', (err, data) => {
     if (err) throw err;
@@ -11,7 +11,7 @@ module.exports.one = function (req, res) {
   })
 };
 
-
+/* Add one friend */
 module.exports.add = function (req, res) {
 
   let id = req.params.id
