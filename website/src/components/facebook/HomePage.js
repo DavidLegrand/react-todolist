@@ -3,7 +3,7 @@ import React from 'react'
 const HomePage = () => {
   return (
     <div>
-      Welcome Home
+      Todo : add Newsfeed
     </div>
   )
 }
