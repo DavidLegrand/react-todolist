@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Logged } from '../../../context'
 
 const LogoutButton = () => {
+  const { setUser, setIsLogged } = useContext(Logged);
+  const handleLogout = () => {
+    setUser({});
+    setIsLogged(false);
+  }
   return (
-    <button>Déconnexion</button>
+    <button onClick={handleLogout}>Déconnexion</button>
   )
 }
 

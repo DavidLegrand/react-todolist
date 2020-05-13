@@ -1,10 +1,9 @@
 import React from 'react'
+import NewsFeed from './NewsFeed'
 
 const HomePage = () => {
   return (
-    <div>
-      Todo : add Newsfeed
-    </div>
+    <NewsFeed />
   )
 }
 

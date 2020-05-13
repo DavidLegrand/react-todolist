@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Switch, Route } from "react-router-dom";
 import { Logged } from './context'
 import HomePage from './components/facebook/HomePage'
@@ -8,12 +8,10 @@ import Header from './components/facebook/header'
 function App() {
   const [user, setUser] = useState({})
   const [isLogged, setIsLogged] = useState(false)
-  useEffect(() => {
-    console.log(user)
-  })
+  const value = { user, setUser, isLogged, setIsLogged }
+
   return (
-    <Logged.Provider value={{ user, setUser, isLogged, setIsLogged }} >
-      User : {user.firstName}, {user.lastName}
+    <Logged.Provider value={value} >
       <Header />
       {isLogged &&
         <Switch>

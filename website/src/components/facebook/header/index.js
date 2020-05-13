@@ -9,8 +9,8 @@ const Header = () => {
   return (
     <>
       {
-        logged.in ?
-          <><LogoutButton /><NavMenu /></>
+        logged.isLogged ?
+          <><NavMenu /><LogoutButton /></>
           :
           <LoginForm />
       }
