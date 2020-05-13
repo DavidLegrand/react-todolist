@@ -2,10 +2,10 @@ import React from 'react'
 
 const UserBox = ({user}) => {
   return (
-    <div>
+    <span>
       <img src={user.profilePic} style={{width:'25px'}}/>
-      <span>{user.firstname} {user.lastName}</span>
-    </div>
+      <strong> {user.firstName} {user.lastName} </strong>
+    </span>
   )
 }
 

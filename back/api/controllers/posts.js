@@ -45,30 +45,48 @@ module.exports.newsfeed = (req, res) => {
   fs.readFile('api/models/friends.json', (err, data) => {
     if (err) throw err;
     friends = JSON.parse(data)
-    meAndFriends = [userId]
-    friends.map(userFriend => {
-      if (userFriend.userId === userId) {
-        userFriend.friends.map(f => meAndFriends.push(f.id))
-      }
-    });
-    fs.readFile('api/models/posts.json', (err, data) => {
-      if (err) throw err;
-      posts = JSON.parse(data)
-      posts.map(userPosts => {
-        if (meAndFriends.includes(userPosts.userId)) {
-          userPosts.posts.map(p => p.userId = userPosts.userId)
-          newsfeed.push(...userPosts.posts)
-        }
-      })
-      newsfeed.sort((a,b) => new Date(b.date) - new Date(a.date))
-      res.status(200).json(newsfeed);
-      //console.log(newsfeed)
-    })
 
+    fs.readFile('api/models/users.json', (err, data) => {
+      if (err) throw err;
+      users = JSON.parse(data)
+      user = users.find(u => u.id == userId);
+      meAndFriends = [{
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        profilePic: user.profilePic
+      }]
+
+      friends.map(userFriend => {
+        if (userFriend.userId === userId) {
+          userFriend.friends.map(f => meAndFriends.push({
+            id: f.id,
+            firstName: f.firstName,
+            lastName: f.lastName,
+            profilePic: f.profilePic
+          })
+          )
+        }
+      });
+
+      fs.readFile('api/models/posts.json', (err, data) => {
+        if (err) throw err;
+        posts = JSON.parse(data)
+        meAndFriends.map(u => {
+          posts.map(p => {
+            if (p.userId === u.id) {
+              p.posts.map(p => {
+                newsfeed.push({ ...p, author : { ...u }, id:p.id })
+              })
+              //newsfeed.push(...p.posts, u)
+            }
+          })
+        })
+        newsfeed.sort((a, b) => new Date(b.date) - new Date(a.date))
+        res.status(200).json(newsfeed);
+      })
+    })
   })
-  /*
-    
-    */
 }
 
 Date.prototype.formatMDYYYY = () => {

@@ -2,9 +2,8 @@ import React from 'react'
 import UserBox from './UserBox'
 const Comment = ({comment}) => {
   return (
-    <div>
-      <UserBox user={comment.author} />
-      {comment.content}
+    <div style={{paddingLeft:'25px'}}>
+      <UserBox user={comment.author} /> : {comment.content}
     </div>
   )
 }
