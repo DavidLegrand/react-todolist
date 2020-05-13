@@ -62,7 +62,7 @@ module.exports.newsfeed = (req, res) => {
       })
       newsfeed.sort((a,b) => new Date(b.date) - new Date(a.date))
       res.status(200).json(newsfeed);
-      console.log(newsfeed)
+      //console.log(newsfeed)
     })
 
   })
@@ -95,7 +95,7 @@ module.exports.add = (req, res) => {
     postsData[id - 1] = postList
     fs.writeFile('api/models/posts.json', JSON.stringify(postsData), () => {
       res.status(201).json(postList)
-      console.log(postList)
+      //console.log(postList)
     })
   })
 };
