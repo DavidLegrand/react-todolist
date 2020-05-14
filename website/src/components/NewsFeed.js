@@ -2,7 +2,9 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Logged } from '../context'
 import Post from './Post'
 import Col from 'react-bootstrap/Col'
-const NewsFeed = () => {
+
+
+const NewsFeed = ({refetch}) => {
   const [feed, setFeed] = useState([]);
   const { user } = useContext(Logged);
 

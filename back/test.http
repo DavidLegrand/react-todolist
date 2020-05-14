@@ -23,9 +23,7 @@ GET http://localhost:8080/api/users/1/newsfeed
 POST http://localhost:8080/api/users/1/posts
 content-type: application/json
 
-{
-    "content": "Lorem Ipsum dolor sit amet, consectetur adipis"
-}
+{ "content": "Test" }
 
 ########### CREATE ONE COMMENT ########### 
 POST http://localhost:8080/api/users/1/posts/1/comments

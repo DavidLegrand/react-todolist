@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import UserBox from '../UserBox'
 import axios from 'axios'
-import Card from 'react-bootstrap/Card'
+import Col from 'react-bootstrap/Col'
+import Post from '../Post'
 
 const UserPosts = ({ user }) => {
   const [posts, setUserPosts] = useState([])
@@ -12,17 +13,15 @@ const UserPosts = ({ user }) => {
       const result = await axios(
         `http://localhost:8080/api/users/${user.id}/posts`,
       );
-      if (result.data) { setUserPosts(result.data) };
+      if (result.data.posts) { setUserPosts(result.data.posts) };
 
     };
     fetchData();
   }, [user])
 
-  return <> {posts.length > 0 &&
-    <Card>
-      
-    </Card>
-  }</>
+  return <>
+    {posts.map((post) => <Col key={post.id}  xs={12}><Post post={{author:user, ...post}} /></Col>)}
+  </>
 
 }
 

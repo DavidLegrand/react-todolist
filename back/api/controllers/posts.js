@@ -88,20 +88,28 @@ module.exports.newsfeed = (req, res) => {
     })
   })
 }
-
+/*
 Date.prototype.formatMDYYYY = () => {
   return (this.getMonth() + 1) +
     "/" + this.getDate() +
     "/" + this.getFullYear();
+}*/
+
+function formatMDYYYY(date) {
+  var d = date.getDate();
+  var m = date.getMonth() + 1; //Month from 0 to 11
+  var y = date.getFullYear();
+  return m + '/' + d + '/' + y
 }
 
 module.exports.add = (req, res) => {
 
   let id = req.params.id
+ 
   let post = {
     id: undefined,
-    content: req.body._content,
-    date: new Date().formatMDYYYY(),
+    content: req.body.content,
+    date: formatMDYYYY(new Date()),
     comments: []
   }
   fs.readFile('api/models/posts.json', (err, data) => {

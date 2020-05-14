@@ -22,7 +22,7 @@ const FriendList = ({ user }) => {
     <Card>
       <Card.Body>
       <Card.Title><h2>Mes amis</h2></Card.Title>
-        {list.map((f) => <UserBox user={f} />)}
+        {list.map((f) => <UserBox key={f.id} user={f} />)}
       </Card.Body>
     </Card>
   }</>

@@ -5,23 +5,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import axios from 'axios'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import reducers from './reducers'
 
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 // STORE
 let store = createStore(reducers)
-
-// Affichage
-store.subscribe(() => console.log(store.getState()))
-
-
-
-
-
-
-
 
 ReactDOM.render(
   <React.StrictMode>

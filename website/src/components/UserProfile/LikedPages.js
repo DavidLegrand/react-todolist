@@ -22,7 +22,7 @@ const LikedPages = ({ user }) => {
     <Card>
       <Card.Body>
       <Card.Title><h2>Mes likes</h2></Card.Title>
-        {list.map((p) => <p>{p.name}</p>)}
+        {list.map((p) => <p key={p.id}>{p.name}</p>)}
       </Card.Body>
     </Card>
   }</>
