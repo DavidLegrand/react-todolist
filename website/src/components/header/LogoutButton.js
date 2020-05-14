@@ -1,5 +1,8 @@
 import React, { useContext } from 'react'
-import { Logged } from '../../../context'
+import { Logged } from '../../context'
+
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
 const LogoutButton = () => {
   const { setUser, setIsLogged } = useContext(Logged);
@@ -8,7 +11,9 @@ const LogoutButton = () => {
     setIsLogged(false);
   }
   return (
-    <button onClick={handleLogout}>Déconnexion</button>
+    <Form inline>
+      <Button onClick={handleLogout}>Déconnexion</Button>
+    </Form>
   )
 }
 

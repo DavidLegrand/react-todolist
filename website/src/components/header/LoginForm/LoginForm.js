@@ -1,7 +1,12 @@
 import React, { useState, useContext } from 'react'
 import { Logged } from '../../../context'
 
-const LoginForm = () => {
+import Form from 'react-bootstrap/form'
+import Col from 'react-bootstrap/Col'
+import Alert from 'react-bootstrap/Alert'
+import Button from 'react-bootstrap/Button'
+
+const LoginForm = (props) => {
   const [login, setLogin] = useState('scelli0');
   const [error, setError] = useState('');
 
@@ -26,13 +31,26 @@ const LoginForm = () => {
     }
   }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <div><label>Login : <input type="text" value={login} onChange={(e) => setLogin(e.target.value)} /></label></div>
-      <div><label>Mot de passe : <input type="password" /></label></div>
-      <div><button type="submit">Connexion</button></div>
-      <div>{error}</div>
-    </form>
+  return (<Col>
+    <Form onSubmit={handleSubmit}>
+      <Form.Row>
+        <Col>
+          <Form.Control
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
+            type="text"
+            placeholder="Login" />
+        </Col>
+        <Col>
+          <Form.Control type="password" placeholder="Mot de passe" />
+        </Col>
+        <Col>
+          <Button variant="primary" type="submit">Submit</Button>
+        </Col>
+      </Form.Row>
+    </Form>
+    {error && <Alert variant="danger">{error}</Alert>}
+  </Col>
   )
 }
 

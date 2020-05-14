@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Logged } from '../../context'
+import { Logged } from '../context'
 import Post from './Post'
-
+import Col from 'react-bootstrap/Col'
 const NewsFeed = () => {
   const [feed, setFeed] = useState([]);
   const { user } = useContext(Logged);
@@ -14,7 +14,7 @@ const NewsFeed = () => {
   }, [user.id])
 
   return (<>
-    {feed.map((post) => <Post key={post.id} post={post}/>)}
+    {feed.map((post) => <Col xs={12}><Post key={post.id} post={post}/></Col>)}
   </>)
 }
 
