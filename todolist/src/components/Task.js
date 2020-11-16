@@ -3,14 +3,16 @@ import { Badge, ListGroupItem } from 'react-bootstrap'
 import TaskModel from '../models/task'
 
 const Task = () => {
-  const task = new TaskModel(1, "Ceci est une tâche")
-  
-  const getCompleted = () => task.completed ? "Terminée" : "En cours"
-  const getColor = () => task.completed ? "success" : "warning"
+  const task = new TaskModel(1, "Finaliser l'API todolist", false)
+
+
 
   return (
-    <ListGroupItem variant={getColor()}>
-      {task.title} <Badge variant={getColor()}>{getCompleted()}</Badge>
+    <ListGroupItem variant={task.getColor()}>
+      <h2 className="h4">
+        {task.title}
+        <Badge className="float-right" variant={task.getColor()}>{task.getCompleted()}</Badge>
+      </h2>
     </ListGroupItem>
   )
 }

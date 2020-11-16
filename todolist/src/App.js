@@ -6,7 +6,7 @@ function App() {
     <Container>
       <Row>
         <Col>
-          <h1>To Do List</h1>
+          <h1 className="display-3 text-center">To Do List</h1>
           <ToDoList />
         </Col>
       </Row>
