@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ListGroup } from 'react-bootstrap'
+import { ListGroup, Button } from 'react-bootstrap'
 import TaskModel from '../models/task'
 import Task from './Task'
 
@@ -10,22 +10,31 @@ const ToDoList = () => {
     new TaskModel(3, "Intégrer le formulaire", false),
   ])
 
-  const complete = (t) => updateTask(t, true)
-  const cancel = (t) => updateTask(t, false)
-  
-  const updateTask = (t, completed) => {
-    const newTask = new TaskModel();
-    const newList = (list.map(task =>
+  const complete = (t) => updateCompleted(t, true)
+  const cancel = (t) => updateCompleted(t, false)
+  const completeAll = () => updateCompletedAll(true)
+  const cancelAll = () => updateCompletedAll(false)
+
+  const updateCompleted = (t, isComplete) => {
+    setlist(list.map(task =>
       task.id === t.id ?
-        Object.assign(newTask, { ...task, completed: completed }) :
+        Object.assign(new TaskModel(), { ...task, completed: isComplete }) :
         task))
-    setlist(newList)
   }
 
+  const updateCompletedAll = (isComplete) => {
+    setlist(list.map(task =>
+      Object.assign(new TaskModel(), { ...task, completed: isComplete })))
+  }
+  
   return (
-    <ListGroup>
-      {list.map(t => <Task task={t} key={t.id} complete={complete} cancel={cancel} />)}
-    </ListGroup>
+    <>
+      <ListGroup>
+        {list.map(t => <Task task={t} key={t.id} complete={complete} cancel={cancel} />)}
+      </ListGroup>
+      <Button onClick={() => cancelAll()} variant="dark">Annuler</Button> :
+      <Button onClick={() => completeAll()} variant="success">Terminer</Button>
+    </>
   )
 }
 
