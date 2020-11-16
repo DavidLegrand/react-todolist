@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+
 import { Badge, Button, ListGroupItem } from 'react-bootstrap'
 import TaskModel from '../models/task'
 
