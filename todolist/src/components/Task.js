@@ -1,9 +1,17 @@
 import React from 'react'
-import { ListGroupItem } from 'react-bootstrap'
+import { Badge, ListGroupItem } from 'react-bootstrap'
+import TaskModel from '../models/task'
 
 const Task = () => {
+  const task = new TaskModel(1, "Ceci est une tâche")
+  
+  const getCompleted = () => task.completed ? "Terminée" : "En cours"
+  const getColor = () => task.completed ? "success" : "warning"
+
   return (
-    <ListGroupItem>Ceci est une tâche</ListGroupItem>
+    <ListGroupItem variant={getColor()}>
+      {task.title} <Badge variant={getColor()}>{getCompleted()}</Badge>
+    </ListGroupItem>
   )
 }
 
