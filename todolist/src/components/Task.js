@@ -14,8 +14,8 @@ const Task = () => {
         <Badge className="float-right" variant={task.getColor()}>{task.getCompleted()}</Badge>
       </h2>
       {task.completed ?
-        <Button onClick={() => console.log(task)} variant={task.getCancelColor()}>Annuler</Button> :
-        <Button onClick={() => console.log(task)} variant={task.getCancelColor()}>Terminer</Button>
+        <Button onClick={() => console.log(task)} variant={task.getButtonColor()}>Annuler</Button> :
+        <Button onClick={() => console.log(task)} variant={task.getButtonColor()}>Terminer</Button>
       }
     </ListGroupItem>
   )
