@@ -9,7 +9,6 @@ const Task = () => {
 
   const getCompleted = () => task.completed ? "Terminée" : "En cours"
   const getColor = () => task.completed ? "success" : "warning"
-  const getButtonColor = () => task.completed ? "dark" : "success"
 
   return (
     <ListGroupItem variant={getColor()}>
@@ -18,8 +17,8 @@ const Task = () => {
         <Badge className="float-right" variant={getColor()}>{getCompleted()}</Badge>
       </h2>
       {task.completed ?
-        <Button onClick={() => console.log(task, "tâche annulée")} variant={getButtonColor()}>Annuler</Button> :
-        <Button onClick={() => console.log(task, "tâche terminée")} variant={getButtonColor()}>Terminer</Button>
+        <Button onClick={() => console.log(task, "tâche annulée")} variant="dark">Annuler</Button> :
+        <Button onClick={() => console.log(task, "tâche terminée")} variant="success">Terminer</Button>
       }
     </ListGroupItem>
   )
