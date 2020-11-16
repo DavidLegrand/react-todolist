@@ -4,5 +4,5 @@ export default class TaskModel {
   }
   getCompleted = () => this.completed ? "Terminée" : "En cours"
   getColor = () => this.completed ? "success" : "warning"
-  getCancelColor = () => this.completed ? "dark" : "success"
+  getButtonColor = () => this.completed ? "dark" : "success"
 }
