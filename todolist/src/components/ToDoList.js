@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ListGroup, Button } from 'react-bootstrap'
+import { ListGroup, Button, ListGroupItem } from 'react-bootstrap'
 import TaskModel from '../models/task'
 import Task from './Task'
 
@@ -26,14 +26,16 @@ const ToDoList = () => {
     setlist(list.map(task =>
       Object.assign(new TaskModel(), { ...task, completed: isComplete })))
   }
-  
+
   return (
     <>
       <ListGroup>
         {list.map(t => <Task task={t} key={t.id} complete={complete} cancel={cancel} />)}
+        <ListGroupItem variant="light" className="text-center">
+          <Button onClick={() => cancelAll()} variant="dark" >Tout annuler</Button>
+          <Button onClick={() => completeAll()} variant="success">Tout terminer</Button>
+        </ListGroupItem>
       </ListGroup>
-      <Button onClick={() => cancelAll()} variant="dark">Annuler</Button> :
-      <Button onClick={() => completeAll()} variant="success">Terminer</Button>
     </>
   )
 }
