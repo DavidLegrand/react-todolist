@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { ListGroup, Button, ListGroupItem } from 'react-bootstrap'
 import TaskModel from '../models/task'
 import Task from './Task'
+import NewTaskForm from './NewTaskForm'
 
 const ToDoList = () => {
   const [list, setlist] = useState([
@@ -27,6 +28,17 @@ const ToDoList = () => {
       Object.assign(new TaskModel(), { ...task, completed: isComplete })))
   }
 
+  const getLastId = () => {
+
+    var id = list.reduce((prev, curr) =>
+      prev.id > curr.id ? prev : curr
+    ).id;
+    console.log(id)
+    return id
+  }
+  const addTask = (task) => {
+    setlist([...list, Object.assign(new TaskModel(), { ...task, id: getLastId() + 1 })])
+  }
   return (
     <>
       <ListGroup>
@@ -36,6 +48,7 @@ const ToDoList = () => {
           <Button onClick={() => completeAll()} variant="success">Tout terminer</Button>
         </ListGroupItem>
       </ListGroup>
+      <NewTaskForm add={addTask} />
     </>
   )
 }
