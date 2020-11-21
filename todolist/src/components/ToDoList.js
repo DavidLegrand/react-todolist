@@ -29,7 +29,7 @@ const ToDoList = () => {
   }
 
   const getLastId = () => list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id
-  
+
   const addTask = (task) => {
     setlist([...list, Object.assign(new TaskModel(), { ...task, id: getLastId() + 1 })])
   }
