@@ -1,49 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { ListGroup, Button, ListGroupItem } from 'react-bootstrap'
 import TaskModel from '../models/task'
 import Task from './Task'
 import NewTaskForm from './NewTaskForm'
 import { UserIdContext } from '../context'
+import { usePutList, useGetList } from '../hooks'
 
 const ToDoList = () => {
-  const [list, setlist] = useState([])
+  const [list, setlist] = useState(null)
   const [userId, setuserId] = useContext(UserIdContext)
-  const [loading, setloading] = useState(true)
+  const endpoint = `https://todolist-react-7495e.firebaseio.com/tasks.json`
 
-  const endpoint = `https://todolist-react-7495e.firebaseio.com/tasks.json?userId=${userId}`
 
-  useEffect(() => {
-    const sendData = () => {
-      const options = {
-        method: 'PUT',
-        mode: 'cors',
-        body: JSON.stringify(list),
-        headers: { 'Content-Type': 'application/json' },
-      }
-      fetch(endpoint, options)
-        .then(response => { if (response.ok) console.log('data sent to server'); return response.json() })
-        .then(data => console.log("data", data, "list", list, "loading", loading,))
-        .catch(error => console.error(error))
-    }
-    if (loading === false && list.length > 0)
-      sendData()
-  }, [list, endpoint])
-
-  useEffect(() => {
-    const getData = () => {
-      fetch(endpoint)
-        .then(response => response.json())
-        .then(data => {
-          setlist(
-            data.map(task =>
-              Object.assign(new TaskModel(), task))
-          )
-        })
-        .then(() => setloading(false))
-        .catch(error => console.error(error))
-    }
-    getData()
-  }, [endpoint])
+  useGetList(endpoint, list, setlist, TaskModel)
+  //usePutList(endpoint, list)
 
 
   const complete = (t) => updateCompleted(t, true)
@@ -73,13 +43,14 @@ const ToDoList = () => {
       userId: userId
     })])
   }
+
   return (
     <>
       User Id : <input type="number" value={userId} onChange={(e) => setuserId(+e.target.value)} />
       <ListGroup>
         {
-          loading ?
-            <ListGroupItem variant="light" className="text-center">... Chargement{list.length}{loading}</ListGroupItem> :
+          !list ?
+            <ListGroupItem variant="light" className="text-center">... Chargement</ListGroupItem> :
             list.map(t => t.userId === userId && <Task task={t} key={t.id} complete={complete} cancel={cancel} />)
         }
         <ListGroupItem variant="light" className="text-center">
