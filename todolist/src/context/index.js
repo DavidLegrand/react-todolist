@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react'
 
-const defaultUserId = 'light'
+const defaultUserId = 1
 const UserIdContext = createContext(defaultUserId)
 const UserIdProvider = ({ children }) => {
   const [userId, setUserId] = useState(defaultUserId)

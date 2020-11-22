@@ -1,15 +1,50 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { ListGroup, Button, ListGroupItem } from 'react-bootstrap'
 import TaskModel from '../models/task'
 import Task from './Task'
 import NewTaskForm from './NewTaskForm'
+import { UserIdContext } from '../context'
 
 const ToDoList = () => {
-  const [list, setlist] = useState([
-    new TaskModel(1, "Finaliser les foutues maquettes", true),
-    new TaskModel(2, "Terminer l'API backend", false),
-    new TaskModel(3, "Intégrer le formulaire", false),
-  ])
+  const [list, setlist] = useState([])
+  const [userId, setuserId] = useContext(UserIdContext)
+  const [loading, setloading] = useState(true)
+
+  const endpoint = `https://todolist-react-7495e.firebaseio.com/tasks.json?userId=${userId}`
+
+  useEffect(() => {
+    const sendData = () => {
+      const options = {
+        method: 'PUT',
+        mode: 'cors',
+        body: JSON.stringify(list),
+        headers: { 'Content-Type': 'application/json' },
+      }
+      fetch(endpoint, options)
+        .then(response => { if (response.ok) console.log('data sent to server'); return response.json() })
+        .then(data => console.log("data", data, "list", list, "loading", loading,))
+        .catch(error => console.error(error))
+    }
+    if (loading === false && list.length > 0)
+      sendData()
+  }, [list, endpoint])
+
+  useEffect(() => {
+    const getData = () => {
+      fetch(endpoint)
+        .then(response => response.json())
+        .then(data => {
+          setlist(
+            data.map(task =>
+              Object.assign(new TaskModel(), task))
+          )
+        })
+        .then(() => setloading(false))
+        .catch(error => console.error(error))
+    }
+    getData()
+  }, [endpoint])
+
 
   const complete = (t) => updateCompleted(t, true)
   const cancel = (t) => updateCompleted(t, false)
@@ -31,12 +66,22 @@ const ToDoList = () => {
   const getLastId = () => list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id
 
   const addTask = (task) => {
-    setlist([...list, Object.assign(new TaskModel(), { ...task, id: getLastId() + 1 })])
+    setlist([...list, Object.assign(new TaskModel(), {
+      ...task,
+      created: new Date(),
+      id: getLastId() + 1,
+      userId: userId
+    })])
   }
   return (
     <>
+      User Id : <input type="number" value={userId} onChange={(e) => setuserId(+e.target.value)} />
       <ListGroup>
-        {list.map(t => <Task task={t} key={t.id} complete={complete} cancel={cancel} />)}
+        {
+          loading ?
+            <ListGroupItem variant="light" className="text-center">... Chargement{list.length}{loading}</ListGroupItem> :
+            list.map(t => t.userId === userId && <Task task={t} key={t.id} complete={complete} cancel={cancel} />)
+        }
         <ListGroupItem variant="light" className="text-center">
           <Button onClick={() => cancelAll()} variant="dark" >Tout annuler</Button>
           <Button onClick={() => completeAll()} variant="success">Tout terminer</Button>
