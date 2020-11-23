@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState, useContext, useRef, useCallback } from 'react'
 import { ListGroup, Button, ListGroupItem } from 'react-bootstrap'
 import TaskModel from '../models/task'
 import Task from './Task'
@@ -17,16 +17,32 @@ const ToDoList = () => {
   const fetch = useFetch(endpoint, setlist, isDataFetched)
   usePut(endpoint, list, isDataFetched)
 
-  const complete = (t) => updateCompleted(t, true)
-  const cancel = (t) => updateCompleted(t, false)
-  const completeAll = () => updateCompletedAll(true)
-  const cancelAll = () => updateCompletedAll(false)
+  const updateCompletedAll = useCallback(
+    (isComplete) => { setlist(list.map(task => { return { ...task, completed: isComplete } })) },
+    [list]
+  )
+  const updateCompleted = useCallback(
+    (t, isComplete) => { setlist(list.map(task => task.id === t.id ? { ...task, completed: isComplete } : task)) },
+    [list]
+  )
 
-  const updateCompleted = (t, isComplete) => { setlist(list.map(task => task.id === t.id ? { ...task, completed: isComplete } : task)) }
-  const updateCompletedAll = (isComplete) => { setlist(list.map(task => { return { ...task, completed: isComplete } })) }
+  const complete = useCallback((t) => updateCompleted(t, true), [updateCompleted])
+  const cancel = useCallback((t) => updateCompleted(t, false), [updateCompleted])
+  const completeAll = useCallback(() => updateCompletedAll(true), [updateCompletedAll])
+  const cancelAll = useCallback(() => updateCompletedAll(false), [updateCompletedAll])
 
-  const getLastId = () => list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id$
-  const addTask = (task) => { setlist([...list, {...task, created: new Date(), id: getLastId() + 1, userId: userId}])}
+
+  const addTask = useCallback(
+    (task) => {
+      setlist([...list, {
+        ...task,
+        created: new Date(),
+        id: list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id + 1,
+        userId: userId
+      }])
+    },
+    [list, userId],
+  )
 
   return (
     <>
