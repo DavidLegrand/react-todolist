@@ -1,9 +1,9 @@
 import React, { useState, useContext, useRef, useCallback, useEffect } from 'react'
-import { UserIdContext } from '../context'
-import { useFetch, usePut } from '../hooks'
-import NewTaskForm from './ToDoList/NewTaskForm'
+import { UserIdContext } from '../../context'
+import { useFetch, usePut } from '../../hooks'
+import NewTaskForm from './NewTaskForm'
 import ToDoListView from './ToDoListView'
-import Title from './shared/Title'
+import Title from '../shared/Title'
 
 const ToDoList = () => {
 

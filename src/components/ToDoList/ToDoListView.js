@@ -1,7 +1,7 @@
 import React from 'react'
 import Task from './Task'
 import { ListGroup, ListGroupItem, Button } from 'react-bootstrap'
-import TaskModel from '../models/task'
+import TaskModel from '../../models/task'
 import ToDoListFilter from './ToDoListFilter'
 
 const ToDoListView = ({ list, complete, cancel, completeAll, cancelAll, setFilter }) => {
