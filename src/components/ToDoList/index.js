@@ -67,7 +67,6 @@ const ToDoList = () => {
           setFilter={setStatusFilter}
         />
       }
-      <NewTaskForm add={addTask} />
     </>
   )
 }
