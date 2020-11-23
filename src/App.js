@@ -8,7 +8,6 @@ function App() {
       <Row>
         <Col>
           <UserIdProvider>
-            <h1 className="display-3 text-center">To Do List</h1>
             <ToDoList />
           </UserIdProvider>
         </Col>

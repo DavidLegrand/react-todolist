@@ -1,21 +1,23 @@
-import React, { useState, useContext, useRef, useCallback } from 'react'
-import { ListGroup, Button, ListGroupItem } from 'react-bootstrap'
-import TaskModel from '../models/task'
-import Task from './Task'
-import NewTaskForm from './NewTaskForm'
+import React, { useState, useContext, useRef, useCallback, useEffect } from 'react'
 import { UserIdContext } from '../context'
 import { useFetch, usePut } from '../hooks'
+import ToDoListView from './ToDoListView'
 
 const ToDoList = () => {
 
   const [list, setlist] = useState([])
+  const [filteredList, setfilteredList] = useState([])
+  const [userId, setuserId] = useContext(UserIdContext)
   const isDataFetched = useRef(false)
 
-  const [userId, setuserId] = useContext(UserIdContext)
   const endpoint = `https://todolist-react-7495e.firebaseio.com/tasks.json`
 
   const fetch = useFetch(endpoint, setlist, isDataFetched)
   usePut(endpoint, list, isDataFetched)
+
+  useEffect(() => {
+    setfilteredList(list.filter(task => task.userId === userId))
+  }, [list, userId])
 
   const updateCompletedAll = useCallback(
     (isComplete) => { setlist(list.map(task => { return { ...task, completed: isComplete } })) },
@@ -31,7 +33,6 @@ const ToDoList = () => {
   const completeAll = useCallback(() => updateCompletedAll(true), [updateCompletedAll])
   const cancelAll = useCallback(() => updateCompletedAll(false), [updateCompletedAll])
 
-
   const addTask = useCallback(
     (task) => {
       setlist([...list, {
@@ -46,19 +47,16 @@ const ToDoList = () => {
 
   return (
     <>
-      User Id : <input type="number" value={userId} onChange={(e) => setuserId(+e.target.value)} />
-      <ListGroup>
-        {
-          fetch.isLoading ?
-            <ListGroupItem variant="light" className="text-center">... Chargement</ListGroupItem> :
-            list.map(t => t.userId === userId && <Task task={Object.assign(new TaskModel(), t)} key={t.id} complete={complete} cancel={cancel} />)
-        }
-        <ListGroupItem variant="light" className="text-center">
-          <Button onClick={() => cancelAll()} variant="dark" >Tout annuler</Button>
-          <Button onClick={() => completeAll()} variant="success">Tout terminer</Button>
-        </ListGroupItem>
-      </ListGroup>
-      <NewTaskForm add={addTask} />
+    User Id : <input type="number" value={userId} onChange={(e) => setuserId(+e.target.value)} />
+    <ToDoListView
+      list={filteredList}
+      complete={complete}
+      cancel={cancel}
+      completeAll={completeAll}
+      cancelAll={cancelAll}
+      addTask={addTask}
+      isLoading={fetch.isLoading}
+    />
     </>
   )
 }

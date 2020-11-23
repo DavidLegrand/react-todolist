@@ -57,5 +57,8 @@ const useFetch = async (endpoint, setData, isDataFetched) => {
   return { error, isLoading };
 };
 
+const useTitle = title => {
+  useEffect(() => { document.title = title }, [title])
+}
 
-export { useFetch, usePut }
+export { useFetch, usePut, useTitle }
