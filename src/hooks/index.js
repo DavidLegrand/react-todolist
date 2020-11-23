@@ -15,8 +15,9 @@ const usePut = async (endpoint, data, isDataFetched) => {
     setIsLoading(true);
     try {
       const res = await fetch(endpoint, options);
-      const json = await res.json();
-      console.log("data sent", data)
+      //const json = await res.json();
+      if (res.ok)
+        console.log("data sent", data)
       setIsLoading(false)
     } catch (error) {
       setError(error);
