@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { ListGroup, Button, ListGroupItem } from 'react-bootstrap'
 import TaskModel from '../models/task'
 import Task from './Task'
@@ -9,12 +9,13 @@ import { useFetch, usePut } from '../hooks'
 const ToDoList = () => {
 
   const [list, setlist] = useState([])
+  const isDataFetched = useRef(false)
 
   const [userId, setuserId] = useContext(UserIdContext)
   const endpoint = `https://todolist-react-7495e.firebaseio.com/tasks.json`
 
-  const fetch = useFetch(endpoint, setlist)
-  usePut(endpoint, list)
+  const fetch = useFetch(endpoint, setlist, isDataFetched)
+  usePut(endpoint, list, isDataFetched)
 
   const complete = (t) => updateCompleted(t, true)
   const cancel = (t) => updateCompleted(t, false)
