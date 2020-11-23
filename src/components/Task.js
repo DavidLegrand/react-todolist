@@ -27,4 +27,4 @@ Task.propTypes = {
   complete: PropTypes.func.isRequired,
 }
 
-export default Task
+export default React.memo(Task)

@@ -34,4 +34,4 @@ const NewTaskForm = ({ add }) => {
   );
 }
 
-export default NewTaskForm
+export default React.memo(NewTaskForm)
