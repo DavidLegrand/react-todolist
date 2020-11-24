@@ -1,22 +1,22 @@
-import React, { useState, useContext, useRef, useCallback, useEffect } from 'react'
-import { UserIdContext } from '../../context'
-import { useFetch, usePut } from '../../hooks'
-import NewTaskForm from './NewTaskForm'
+import React, { useState, useCallback, useEffect } from 'react'
 import ToDoListView from './ToDoListView'
 import Title from '../shared/Title'
+import { useDispatch, useSelector } from 'react-redux'
+import fetchTasks from '../../store/actions/todolist'
 
 const ToDoList = () => {
+  const dispatch = useDispatch()
+  const list = useSelector(state => state.todolist.list)
+  const loading = useSelector(state => state.todolist.loading)
+  const userId = useSelector(state => state.user.userId)
 
-  const [list, setlist] = useState([])
+  useEffect(() => {
+    dispatch(fetchTasks)
+  }, [dispatch])
+
   const [filteredList, setfilteredList] = useState([])
-  const [userId, setuserId] = useContext(UserIdContext)
   const [statusFilter, setStatusFilter] = useState('all')
-  const isDataFetched = useRef(false)
 
-  const endpoint = `https://todolist-react-7495e.firebaseio.com/tasks.json`
-
-  const fetch = useFetch(endpoint, setlist, isDataFetched)
-  usePut(endpoint, list, isDataFetched)
 
   useEffect(() => {
     if (statusFilter === 'all') {
@@ -27,11 +27,11 @@ const ToDoList = () => {
   }, [list, userId, statusFilter])
 
   const updateCompletedAll = useCallback(
-    (isComplete) => { setlist(list.map(task => { return { ...task, completed: isComplete } })) },
+    (isComplete) => { /*setlist(list.map(task => { return { ...task, completed: isComplete } }))*/ },
     [list]
   )
   const updateCompleted = useCallback(
-    (t, isComplete) => { setlist(list.map(task => task.id === t.id ? { ...task, completed: isComplete } : task)) },
+    (t, isComplete) => { /*setlist(list.map(task => task.id === t.id ? { ...task, completed: isComplete } : task))*/ },
     [list]
   )
 
@@ -42,12 +42,12 @@ const ToDoList = () => {
 
   const addTask = useCallback(
     (task) => {
-      setlist([...list, {
+      /*setlist([...list, {
         ...task,
         created: new Date(),
         id: list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id + 1,
         userId: userId
-      }])
+      }])*/
     },
     [list, userId],
   )
@@ -55,7 +55,7 @@ const ToDoList = () => {
   return (
     <>
       <Title>To Do List</Title>
-      {fetch.isLoading ?
+      {loading ?
         <h2 variant="light" className="text-center">... Chargement</h2> :
         <ToDoListView
           list={filteredList}

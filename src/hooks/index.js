@@ -33,32 +33,8 @@ const usePut = async (endpoint, data, isDataFetched) => {
 
 
 
-const useFetch = async (endpoint, setData, isDataFetched) => {
-
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch(endpoint);
-      const json = await res.json();
-      setData(json);
-      setIsLoading(false)
-      if (res.ok) { console.log("data fetched", json); isDataFetched.current = true }
-    } catch (error) {
-      setError(error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return { error, isLoading };
-};
-
 const useTitle = title => {
   useEffect(() => { document.title = title }, [title])
 }
 
-export { useFetch, usePut, useTitle }
+export { usePut, useTitle }

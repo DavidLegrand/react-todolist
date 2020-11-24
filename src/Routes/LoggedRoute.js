@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
-import { IsLoggedContext } from '../context'
+import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const LoggedRoute = ({ component: Component, path }) => {
-  const [isLogged] = useContext(IsLoggedContext)
+  const isLogged = useSelector(state => state.user.isLogged)
 
   return (
     <Route path={path}>

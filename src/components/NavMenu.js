@@ -1,10 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Navbar, Nav, Button, Form } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
-import { IsLoggedContext } from '../context'
+import { useDispatch, useSelector } from 'react-redux'
+import { userLogout } from '../store/actions/user'
 
 const NavMenu = () => {
-  const [isLogged, setIsLogged] = useContext(IsLoggedContext)
+  const isLogged = useSelector(state => state.user.isLogged)
+  const dispatch = useDispatch()
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Nav as="ul" className="mr-auto">
@@ -17,7 +19,7 @@ const NavMenu = () => {
       </Nav>
       {isLogged &&
         <Form className="form-inline">
-          <Button variant="danger" onClick={() => setIsLogged(false)}>Déconnexion</Button>
+          <Button variant="danger" onClick={() => dispatch(userLogout())}>Déconnexion</Button>
         </Form>
       }
     </Navbar>

@@ -1,26 +1,29 @@
 
-import React, { useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap'
-import { UserIdContext, IsLoggedContext } from '../context'
 import { Redirect } from 'react-router-dom'
 import Title from './shared/Title'
+import { useDispatch, useSelector } from 'react-redux'
+import { userLogin } from '../store/actions/user'
 
 const Login = () => {
-  const [userId, setuserId] = useContext(UserIdContext)
-  const [isLogged, setIsLogged] = useContext(IsLoggedContext)
+  const [formUserId, setformUserId] = useState(1)
+  const isLogged = useSelector(state => state.user.isLogged)
+  const dispatch = useDispatch()
 
   const handleLogin = (e) => {
-    setuserId(+e.target.value)
-
+    setformUserId(+e.target.value)
   }
-  const handleSubmit = () => {
-    setIsLogged(true)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(userLogin(formUserId))
+    
   }
   return (
     <>
       <Title>Connexion</Title>
       <Form onSubmit={handleSubmit}>
-        <Form.Control type="number" value={userId} onChange={handleLogin} />
+        <Form.Control type="number" value={formUserId} onChange={handleLogin} />
         <Button type="submit">Se connecter</Button>
       </Form>
       {isLogged && <Redirect to="/tasks" />}
