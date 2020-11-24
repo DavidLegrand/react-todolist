@@ -10,7 +10,7 @@ const ToDoList = () => {
   const [userId, setuserId] = useContext(UserIdContext)
   const [loading, setloading] = useState(true)
 
-  const endpoint = `https://todolist-react-7495e.firebaseio.com/tasks.json?userId=${userId}`
+  const endpoint = `https://todolist-react-7495e.firebaseio.com/tasks.json`
 
   useEffect(() => {
     const sendData = () => {
