@@ -1,5 +1,5 @@
 
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { UserIdContext, IsLoggedContext } from '../context'
 import { Redirect } from 'react-router-dom'
