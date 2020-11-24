@@ -24,7 +24,7 @@ const usePut = async (endpoint, data, isDataFetched) => {
     }
   };
   useEffect(() => {
-    if (isDataFetched.current)
+    if (isDataFetched.current && data !== null)
       fetchData();
   }, [data]);
 
