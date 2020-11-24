@@ -1,8 +1,7 @@
 import './App.css';
 import { Row, Col, Container } from 'react-bootstrap'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { UserIdProvider } from './context';
-import ToDoList from './components/ToDoList';
+import { GlobalContextProvider } from './context';
 import NavMenu from './components/NavMenu';
 import Routes from './Routes';
 
@@ -13,9 +12,9 @@ function App() {
       <Container>
         <Row>
           <Col>
-            <UserIdProvider>
+            <GlobalContextProvider>
               <Routes />
-            </UserIdProvider>
+            </GlobalContextProvider>
           </Col>
         </Row>
       </Container>

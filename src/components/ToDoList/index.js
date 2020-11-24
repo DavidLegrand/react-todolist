@@ -55,7 +55,6 @@ const ToDoList = () => {
   return (
     <>
       <Title>To Do List</Title>
-      User Id : <input type="number" value={userId} onChange={(e) => setuserId(+e.target.value)} />
       {fetch.isLoading ?
         <h2 variant="light" className="text-center">... Chargement</h2> :
         <ToDoListView

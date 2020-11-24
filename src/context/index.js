@@ -10,4 +10,26 @@ const UserIdProvider = ({ children }) => {
     </UserIdContext.Provider>
   )
 }
-export { UserIdProvider, UserIdContext }
+
+const defaultIsLogged = false
+const IsLoggedContext = createContext(defaultIsLogged)
+const IsLoggedProvider = ({ children }) => {
+  const [isLogged, setIsLogged] = useState(defaultIsLogged)
+  return (
+    <IsLoggedContext.Provider value={[isLogged, setIsLogged]}>
+      {children}
+    </IsLoggedContext.Provider>
+  )
+}
+
+const GlobalContextProvider = ({ children }) => {
+  return (
+    <IsLoggedProvider>
+      <UserIdProvider>
+        {children}
+      </UserIdProvider>
+    </IsLoggedProvider>
+
+  )
+}
+export { GlobalContextProvider, UserIdContext, IsLoggedContext }
