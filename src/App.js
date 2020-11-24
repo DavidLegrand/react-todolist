@@ -8,16 +8,16 @@ import Routes from './Routes';
 function App() {
   return (
     <Router>
-      <NavMenu />
-      <Container>
-        <Row>
-          <Col>
-            <GlobalContextProvider>
+      <GlobalContextProvider>
+        <NavMenu />
+        <Container>
+          <Row>
+            <Col>
               <Routes />
-            </GlobalContextProvider>
-          </Col>
-        </Row>
-      </Container>
+            </Col>
+          </Row>
+        </Container>
+      </GlobalContextProvider>
     </Router>
   );
 }

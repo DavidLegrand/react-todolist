@@ -9,16 +9,12 @@ const Login = () => {
   const [userId, setuserId] = useContext(UserIdContext)
   const [isLogged, setIsLogged] = useContext(IsLoggedContext)
 
-  useEffect(() => {
-    console.log(isLogged)
-  }, [isLogged])
   const handleLogin = (e) => {
     setuserId(+e.target.value)
 
   }
   const handleSubmit = () => {
     setIsLogged(true)
-    
   }
   return (
     <>
