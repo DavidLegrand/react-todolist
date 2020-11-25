@@ -8,7 +8,6 @@ const ToDoListView = ({ list, complete, cancel, completeAll, cancelAll, setFilte
 
   return (
     <>
-      --{JSON.stringify(loading)}
       <ListGroup>
         <ListGroupItem variant="light" className="text-center">
           <ToDoListFilter setFilter={setFilter} />

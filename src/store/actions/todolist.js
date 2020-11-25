@@ -48,7 +48,7 @@ export const fetchTasks = (dispatch, getState) => {
       return res
     })
     .then(res => res.json())
-    .then(data => Object.keys(data).map((k) => data[k] !== null && data[k]))
+    .then(data => Object.keys(data).map(k => data[k]).filter(i => i !== null))
     .then(filtered => dispatch(fetchTasksSuccess(filtered)))
     .catch(err => dispatch(fetchTasksFailure(err)))
 }
