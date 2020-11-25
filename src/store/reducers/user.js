@@ -1,14 +1,14 @@
 const initialState = {
   isLogged: false,
-  user: {},
+  id: {},
 }
 
 const user = (state = initialState, action) => {
   switch (action.type) {
     case 'USER_LOGIN':
-      return { ...state, isLogged: true, userId: action.payload }
+      return { ...state, isLogged: true, id: action.payload }
     case 'USER_LOGOUT':
-      return { ...state, isLogged: false, user: null }
+      return { ...state, isLogged: false, id: null }
     default:
       return state
   }

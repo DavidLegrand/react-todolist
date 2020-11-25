@@ -11,7 +11,7 @@ const TaskDetails = () => {
   const [task, settask] = useState(null)
   useEffect(() => {
     settask(list.find(t => t.id === +id))
-  }, [])
+  }, [id, list])
 
   return (
     <>

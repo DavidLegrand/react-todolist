@@ -4,7 +4,7 @@ import { Badge, Button, ListGroupItem } from 'react-bootstrap'
 import TaskModel from '../../models/task'
 import { Link } from 'react-router-dom'
 
-const Task = ({ task, cancel, complete }) => {
+const Task = ({ task, cancel, complete, loading }) => {
   const getCompleted = () => task.completed ? "Terminée" : "En cours"
   const getColor = () => task.completed ? "success" : "warning"
 
@@ -16,8 +16,8 @@ const Task = ({ task, cancel, complete }) => {
       </h2>
       <div><Link to={'/tasks/'+task.id}>Afficher les détails</Link></div>
       {task.completed ?
-        <Button onClick={() => cancel(task)} variant="dark">Annuler</Button> :
-        <Button onClick={() => complete(task)} variant="success">Terminer</Button>
+        <Button onClick={() => cancel(task)} variant="dark" disabled={loading}>Annuler</Button> :
+        <Button onClick={() => complete(task)} variant="success" disabled={loading}>Terminer</Button>
       }
     </ListGroupItem>
   )

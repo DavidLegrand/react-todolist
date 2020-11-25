@@ -1,15 +1,30 @@
 import React, { useState } from 'react'
 import { Form, Button } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom'
 import Title from '../shared/Title'
+import { useSelector, useDispatch } from 'react-redux'
+import { postTask } from '../../store/actions/todolist'
 
-const NewTaskForm = ({ add }) => {
+const NewTaskForm = () => {
+  const dispatch = useDispatch()
   const initialState = { title: '', completed: false, description: '' }
   const [task, setTask] = useState(initialState)
+  const [submited, setSubmited] = useState(false)
+  const userId = useSelector(state => state.user.id)
+  const list = useSelector(state => state.todolist.list)
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    add(task)
-    setTask(initialState)
+    const newtask = {
+      ...task,
+      created: new Date(),
+      id: list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id + 1,
+      userId: userId
+    }
+    dispatch(postTask(newtask))
+    setSubmited(true)
   }
+
   const handleChange = (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
     const name = e.target.name;
@@ -34,6 +49,7 @@ const NewTaskForm = ({ add }) => {
         </Form.Group>
         <Button variant="primary" type="submit">Ajouter</Button>
       </Form>
+      {submited && <Redirect to="/tasks" />}
     </>
   );
 }

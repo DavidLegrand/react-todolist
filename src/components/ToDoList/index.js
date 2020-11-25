@@ -2,13 +2,14 @@ import React, { useState, useCallback, useEffect } from 'react'
 import ToDoListView from './ToDoListView'
 import Title from '../shared/Title'
 import { useDispatch, useSelector } from 'react-redux'
-import fetchTasks from '../../store/actions/todolist'
+import { fetchTasks, updateTask, postTask } from '../../store/actions/todolist'
 
 const ToDoList = () => {
   const dispatch = useDispatch()
   const list = useSelector(state => state.todolist.list)
   const loading = useSelector(state => state.todolist.loading)
-  const userId = useSelector(state => state.user.userId)
+  const userId = useSelector(state => state.user.id)
+  const updateloading = useSelector(state => state.todolist.updateloading)
 
   useEffect(() => {
     dispatch(fetchTasks)
@@ -27,30 +28,18 @@ const ToDoList = () => {
   }, [list, userId, statusFilter])
 
   const updateCompletedAll = useCallback(
-    (isComplete) => { /*setlist(list.map(task => { return { ...task, completed: isComplete } }))*/ },
-    [list]
+    (isComplete) => { list.map(task => dispatch(updateTask({ ...task, completed: isComplete }))) },
+    [list, dispatch]
   )
   const updateCompleted = useCallback(
-    (t, isComplete) => { /*setlist(list.map(task => task.id === t.id ? { ...task, completed: isComplete } : task))*/ },
-    [list]
+    (t, isComplete) => { dispatch(updateTask({ ...t, completed: isComplete })) },
+    [dispatch]
   )
 
   const complete = useCallback((t) => updateCompleted(t, true), [updateCompleted])
   const cancel = useCallback((t) => updateCompleted(t, false), [updateCompleted])
   const completeAll = useCallback(() => updateCompletedAll(true), [updateCompletedAll])
   const cancelAll = useCallback(() => updateCompletedAll(false), [updateCompletedAll])
-
-  const addTask = useCallback(
-    (task) => {
-      /*setlist([...list, {
-        ...task,
-        created: new Date(),
-        id: list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id + 1,
-        userId: userId
-      }])*/
-    },
-    [list, userId],
-  )
 
   return (
     <>
@@ -64,6 +53,7 @@ const ToDoList = () => {
           completeAll={completeAll}
           cancelAll={cancelAll}
           setFilter={setStatusFilter}
+          loading={updateloading}
         />
       }
     </>
