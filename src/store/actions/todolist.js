@@ -31,7 +31,7 @@ export const postTaskBegin = () => ({
 });
 
 export const postTaskSuccess = () => ({
-  type: 'POST_TASK_SUCCESS'
+  type: 'POST_TASK_SUCCESS',
 });
 
 export const postTaskFailure = error => ({
@@ -40,15 +40,17 @@ export const postTaskFailure = error => ({
 });
 
 
+const ROOT_URL = 'https://todolist-react-7495e.firebaseio.com/';
+
 export const fetchTasks = (dispatch, getState) => {
   dispatch(fetchTasksBegin())
-  fetch(`https://todolist-react-7495e.firebaseio.com/tasks.json`)
+  fetch(`${ROOT_URL}tasks.json`)
     .then(res => {
       if (!res.ok) throw new Error(res.statusText)
       return res
     })
     .then(res => res.json())
-    .then(data => Object.keys(data).map(k => data[k]).filter(i => i !== null))
+    .then(data => { console.log(data); return Object.keys(data).map(k => { return { ...data[k], _id: k } }).filter(i => i !== null) })
     .then(filtered => dispatch(fetchTasksSuccess(filtered)))
     .catch(err => dispatch(fetchTasksFailure(err)))
 }
@@ -64,14 +66,14 @@ export const updateTask = payload => {
       headers: { 'Content-Type': 'application/json' },
     }
     dispatch(updateTaskBegin())
-    fetch(`https://todolist-react-7495e.firebaseio.com/tasks/${payload.id}.json`, options)
+    fetch(`${ROOT_URL}tasks/${payload._id}.json`, options)
       .then(res => {
         if (!res.ok) throw new Error(res.statusText)
         return res
       })
       .then(res => res.json())
       .then(data => dispatch(updateTaskSuccess(data)))
-      .catch(err => dispatch(updateTaskFailure(err)))
+      .catch(err => { console.log(err); dispatch(updateTaskFailure(err)) })
   }
 }
 
@@ -84,7 +86,7 @@ export const postTask = payload => {
       headers: { 'Content-Type': 'application/json' },
     }
     dispatch(postTaskBegin())
-    fetch(`https://todolist-react-7495e.firebaseio.com/tasks.json`, options)
+    fetch(`${ROOT_URL}tasks.json`, options)
       .then(res => {
         if (!res.ok) throw new Error(res.statusText)
         return res

@@ -2,6 +2,7 @@ const initialState = {
   list: [],
   loading: false,
   updateloading: false,
+  postloading: false,
   error: null
 }
 
@@ -20,11 +21,11 @@ const todolist = (state = initialState, action) => {
     case 'UPDATE_TASK_FAILURE':
       return { ...state, updateloading: false, error: action.payload }
     case 'POST_TASK_BEGIN':
-      return { ...state, error: null }
+      return { ...state, postloading: true, error: null }
     case 'POST_TASK_SUCCESS':
-      return state
+      return { ...state, postloading: false }
     case 'POST_TASK_FAILURE':
-      return { ...state, error: action.payload }
+      return { ...state, postloading: false, error: action.payload }
     default:
       return state
   }

@@ -10,6 +10,7 @@ const NewTaskForm = () => {
   const initialState = { title: '', completed: false, description: '' }
   const [task, setTask] = useState(initialState)
   const [submited, setSubmited] = useState(false)
+  const loading = useSelector(state => state.todolist.postloading)
   const userId = useSelector(state => state.user.id)
   const list = useSelector(state => state.todolist.list)
 
@@ -18,7 +19,7 @@ const NewTaskForm = () => {
     const newtask = {
       ...task,
       created: new Date(),
-      id: list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id + 1,
+      id: list.length ? list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id + 1 : 1,
       userId: userId
     }
     dispatch(postTask(newtask))
@@ -49,7 +50,7 @@ const NewTaskForm = () => {
         </Form.Group>
         <Button variant="primary" type="submit">Ajouter</Button>
       </Form>
-      {submited && <Redirect to="/tasks" />}
+      {(submited && !loading) && <Redirect to="/tasks" />}
     </>
   );
 }
