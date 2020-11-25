@@ -42,10 +42,10 @@ const useFetch = async (endpoint, setData, isDataFetched) => {
     setIsLoading(true);
     try {
       const res = await fetch(endpoint);
-      const json = await res.json();
-      setData(json);
+      const data = await res.json();
+      setData(Object.keys(data).map(k => data[k]).filter(i => i !== null));
       setIsLoading(false)
-      if (res.ok) { console.log("data fetched", json); isDataFetched.current = true }
+      if (res.ok) { console.log("data fetched", data); isDataFetched.current = true }
     } catch (error) {
       setError(error);
     }
