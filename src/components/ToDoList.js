@@ -21,7 +21,7 @@ const ToDoList = () => {
         headers: { 'Content-Type': 'application/json' },
       }
       fetch(endpoint, options)
-        .then(response => { if (response.ok) console.log('data sent to server') })
+        .then(response => { if (response.ok) console.log('data sent', list) })
         .catch(error => console.error(error))
     }
     if (list.length > 0 && list !== null)
@@ -34,10 +34,7 @@ const ToDoList = () => {
         .then(response => response.json())
         .then(data => {
           setloading(false)
-          setlist(
-            data.map(task =>
-              Object.assign(new TaskModel(), task))
-          )
+          setlist(Object.keys(data).map(k => data[k]).filter(i => i !== null))
         })
         .catch(error => console.error(error))
     }
@@ -53,26 +50,26 @@ const ToDoList = () => {
   const updateCompleted = (t, isComplete) => {
     setlist(list.map(task =>
       task.id === t.id ?
-        Object.assign(new TaskModel(), { ...task, completed: isComplete }) :
+        { ...task, completed: isComplete } :
         task))
   }
 
   const updateCompletedAll = (isComplete) => {
     setlist(list.map(task =>
-      Object.assign(new TaskModel(), { ...task, completed: isComplete })))
+      ({ ...task, completed: isComplete })))
   }
 
   const getLastId = () => list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id
 
   const addTask = (task) => {
-    setlist([...list, Object.assign(new TaskModel(), { ...task, created: new Date(), id: getLastId() + 1 })])
+    setlist([...list, { ...task, created: new Date(), id: getLastId() + 1 }])
   }
   return (
     <>
       <ListGroup>
         {loading ?
           <ListGroupItem variant="light" className="text-center">"... Chargement"</ListGroupItem> :
-          list.map(t => <Task task={t} key={t.id} complete={complete} cancel={cancel} />)
+          list.map(t => <Task task={Object.assign(new TaskModel(), t)} key={t.id} complete={complete} cancel={cancel} />)
         }
         <ListGroupItem variant="light" className="text-center">
           <Button onClick={() => cancelAll()} variant="dark" >Tout annuler</Button>
