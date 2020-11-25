@@ -22,7 +22,6 @@ const ToDoList = () => {
       }
       fetch(endpoint, options)
         .then(response => { if (response.ok) console.log('data sent to server'); return response.json() })
-        .then(data => console.log("data", data, "list", list, "loading", loading,))
         .catch(error => console.error(error))
     }
     if (loading === false && list.length > 0)
@@ -34,10 +33,7 @@ const ToDoList = () => {
       fetch(endpoint)
         .then(response => response.json())
         .then(data => {
-          setlist(
-            data.map(task =>
-              Object.assign(new TaskModel(), task))
-          )
+          setlist(Object.keys(data).map(k => data[k]).filter(i => i !== null))
         })
         .then(() => setloading(false))
         .catch(error => console.error(error))
@@ -54,24 +50,24 @@ const ToDoList = () => {
   const updateCompleted = (t, isComplete) => {
     setlist(list.map(task =>
       task.id === t.id ?
-        Object.assign(new TaskModel(), { ...task, completed: isComplete }) :
+        { ...task, completed: isComplete } :
         task))
   }
 
   const updateCompletedAll = (isComplete) => {
     setlist(list.map(task =>
-      Object.assign(new TaskModel(), { ...task, completed: isComplete })))
+      ({ ...task, completed: isComplete })))
   }
 
   const getLastId = () => list.reduce((prev, curr) => prev.id > curr.id ? prev : curr).id
 
   const addTask = (task) => {
-    setlist([...list, Object.assign(new TaskModel(), {
+    setlist([...list, {
       ...task,
       created: new Date(),
       id: getLastId() + 1,
       userId: userId
-    })])
+    }])
   }
   return (
     <>
@@ -80,7 +76,7 @@ const ToDoList = () => {
         {
           loading ?
             <ListGroupItem variant="light" className="text-center">... Chargement{list.length}{loading}</ListGroupItem> :
-            list.map(t => t.userId === userId && <Task task={t} key={t.id} complete={complete} cancel={cancel} />)
+            list.map(t => t.userId === userId && <Task task={Object.assign(new TaskModel(), t)} key={t.id} complete={complete} cancel={cancel} />)
         }
         <ListGroupItem variant="light" className="text-center">
           <Button onClick={() => cancelAll()} variant="dark" >Tout annuler</Button>
